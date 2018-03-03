@@ -1,6 +1,7 @@
 package com.mars;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,5 +17,6 @@ public class Application {
     }
     
     public static Position upperRightBoundary;
-    public static List<Sonda> listOfSondas;
+    public static Map<Integer, Sonda> sondasMap = new HashMap<Integer, Sonda>();
+    public static Map<Position, Sonda> surfaceMap = new HashMap<Position, Sonda>();
 }
