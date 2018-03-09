@@ -27,9 +27,6 @@ public class SetupController {
 	}
 
 	
-
-	
-	
 	
 	@RequestMapping("/mars/getsetup")
     public Position getSetup() {

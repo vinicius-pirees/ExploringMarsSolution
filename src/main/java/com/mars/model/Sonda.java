@@ -1,26 +1,31 @@
 package com.mars.model;
 
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Sonda {
 	
 	private Position position;
 	private String heading;	
-	private static final AtomicInteger count = new AtomicInteger(0);
 	private int id;
 	
-	public Sonda(Position position, String heading) {
-	  this.position = position;
-	  this.heading = heading;	  
-	}
+	public Sonda(Position position, String heading, int id) {
+		  this.position = position;
+		  this.heading = heading;
+		  this.id = id;
+		}
+	
 	
 	public Sonda() {
-		this.id = count.incrementAndGet(); 
+		
 	}
+	
 	
 	public int getID(){
 		return this.id;
+	}
+	
+	public void setId(int id){
+		this.id = id;
 	}
 	
 	public Position getPosition() {
@@ -97,7 +102,8 @@ public class Sonda {
             	newPosition = new Position(x,newY);
             	
             	if (isActionValid(upperRightBoundary, newPosition, surfaceMap)) {
-            		this.position.setY(newY);
+            		surfaceMap.remove(this.position);
+            		this.position.setY(newY);            		
             		surfaceMap.put(newPosition, this);
             	}               
                 break;
@@ -107,7 +113,8 @@ public class Sonda {
             	newPosition = new Position(x,newY);
             	
             	if (isActionValid(upperRightBoundary, newPosition, surfaceMap)) {
-            		this.position.setY(newY);
+            		surfaceMap.remove(this.position);
+            		this.position.setY(newY);         		
             		surfaceMap.put(newPosition, this);
             	}
                 break;
@@ -117,7 +124,8 @@ public class Sonda {
             	newPosition = new Position(newX,y);
             	
             	if (isActionValid(upperRightBoundary, newPosition, surfaceMap)) {
-            		this.position.setX(newX);
+            		surfaceMap.remove(this.position);
+            		this.position.setX(newX);          		
             		surfaceMap.put(newPosition, this);
             	}
                 break;
@@ -127,6 +135,7 @@ public class Sonda {
             	newPosition = new Position(newX,y);
             	
             	if (isActionValid(upperRightBoundary, newPosition, surfaceMap)) {
+            		surfaceMap.remove(this.position);
             		this.position.setX(newX);
             		surfaceMap.put(newPosition, this);
             	}
@@ -138,6 +147,11 @@ public class Sonda {
 	
 	public boolean isActionValid(Position upperRightBoundary, Position newPosition, Map<Position, Sonda> surfaceMap) {
 					
+		//first sonda
+		if (surfaceMap == null){
+			return true;
+		}
+		
 		//another sonda in same Position
 		if (surfaceMap.get(newPosition) != null) {
 			return false;

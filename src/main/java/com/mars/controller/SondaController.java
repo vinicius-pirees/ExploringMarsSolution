@@ -11,16 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import com.mars.Application;
 import com.mars.model.*;
 
 @RestController
 public class SondaController {
-	
+		
 	@RequestMapping(value = "/mars/sonda", method = RequestMethod.POST)
 	public ResponseEntity<Sonda> insertSonda(@RequestBody Sonda sonda) throws Exception{
 				
@@ -30,6 +28,8 @@ public class SondaController {
 		
 		if (sonda.isActionValid(Application.upperRightBoundary, 
 				sonda.getPosition(), Application.surfaceMap)) {
+			
+			
 			Application.sondasMap.put(sonda.getID(), sonda);
 			Application.surfaceMap.put(sonda.getPosition(), sonda);
 			return new ResponseEntity<Sonda>(sonda, HttpStatus.OK);
@@ -44,10 +44,11 @@ public class SondaController {
         return new ResponseEntity<Map<Integer, Sonda>>(Application.sondasMap, HttpStatus.OK);
     }
 	
-	@RequestMapping("/mars/getsonda")
-    public ResponseEntity<Sonda> getSonda(@RequestParam(value="id") Integer id) {
+	@RequestMapping("/mars/getsonda/{id}")
+    public ResponseEntity<Sonda> getSonda(@PathVariable Integer id) {
         return new ResponseEntity<Sonda>(Application.sondasMap.get(id), HttpStatus.OK);
     }
+	
 	
 	@RequestMapping(value = "/mars/movesonda/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Sonda> moveSonda(@PathVariable Integer id, @RequestBody String movements) throws JSONException  {
@@ -61,6 +62,28 @@ public class SondaController {
 		}
         Application.sondasMap.put(id, sonda);
         return new ResponseEntity<Sonda>(sonda, HttpStatus.OK);
+    }
+	
+	
+	@RequestMapping(value = "/mars/deletesonda/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteSonda(@PathVariable Integer id) throws Exception  {
+		
+		Sonda sonda = Application.sondasMap.get(id);
+		
+        if ( sonda != null) {
+        	
+        	Application.surfaceMap.remove(sonda.getPosition());
+        	Application.sondasMap.remove(id);
+        	
+        	return new ResponseEntity<String>("Sonda with id = " + id +  " was deleted", HttpStatus.OK);
+        	
+        } else {
+        	
+        	throw new Exception("The sonda with id " + id + " doesn't exist!");
+        	
+        }
+		
+        
     }
 
 }
