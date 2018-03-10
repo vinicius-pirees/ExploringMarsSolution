@@ -22,8 +22,19 @@ public class SondaController {
 	@RequestMapping(value = "/mars/sonda", method = RequestMethod.POST)
 	public ResponseEntity<Sonda> insertSonda(@RequestBody Sonda sonda) throws Exception{
 				
+		String heading = sonda.getHeading();
+		String validHeadings = "WENS";
+		
 		if(Application.upperRightBoundary == null){
 			throw new Exception("The surface's upper-right border wasn't set!");
+		}
+		
+		if (heading.length() != 1) {
+			throw new Exception("Not a valid heading!");
+		}
+		
+		if (!validHeadings.contains(heading)) {
+			throw new Exception("Not a valid heading!");
 		}
 		
 		if (sonda.isActionValid(Application.upperRightBoundary, 
