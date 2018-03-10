@@ -307,6 +307,40 @@ public class SondaControllerTest extends ExploringMarsTest {
 			
 
 	}
+	
+	
+	/**
+	 * Tests when the user tries to move a sonda with an id that does not exist
+	 * the result is that an Exception is thrown
+	 */	
+	@Test
+	public void testMovesInvalidSonda() throws Exception {
+		mockMvc.perform(post("/mars/setup")
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"x\": 5,\"y\": 5}")); 
+		
+		mockMvc.perform(post("/mars/sonda")
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"position\": {\"x\": 1,\"y\": 2},\"heading\": \"N\",\"id\":1}"));
+	
+		
+		try {
+			mockMvc.perform(put("/mars/movesonda/{id}", 2)
+					.accept(MediaType.APPLICATION_JSON)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content("{\"movements\": \"LMLMMMLMMM\"}"))
+					.andDo(print())
+					.andExpect(status().isBadRequest());
+			fail("This should have thrown an exception");
+			
+		} catch (Exception e){
+			assertEquals("Request processing failed; nested exception is java.lang.Exception: The sonda with id = 2 doesn't exist!", e.getMessage());
+		}
+			
+
+	}
 
 	/**
 	 * Tests when a sonda collides with another one

@@ -3,7 +3,7 @@ package com.mars.controller;
 
 import java.util.Map;
 
-import org.json.JSONException;
+
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,17 +51,22 @@ public class SondaController {
 	
 	
 	@RequestMapping(value = "/mars/movesonda/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Sonda> moveSonda(@PathVariable Integer id, @RequestBody String movements) throws JSONException  {
+    public ResponseEntity<Sonda> moveSonda(@PathVariable Integer id, @RequestBody String movements) throws Exception  {
 		JSONObject obj = new JSONObject(movements);
 		String moves = obj.getString("movements");
         Sonda sonda = Application.sondasMap.get(id);
         
+        if (sonda == null) {      	
+        	throw new Exception("The sonda with id = " + id + " doesn't exist!");   	
+        } else {
+        	for (char movement: moves.toCharArray()) {		
+    			sonda.doAction(String.valueOf(movement), Application.upperRightBoundary, Application.surfaceMap);		
+    		}
+            Application.sondasMap.put(id, sonda);
+            return new ResponseEntity<Sonda>(sonda, HttpStatus.OK);
+        }
         
-        for (char movement: moves.toCharArray()) {		
-			sonda.doAction(String.valueOf(movement), Application.upperRightBoundary, Application.surfaceMap);		
-		}
-        Application.sondasMap.put(id, sonda);
-        return new ResponseEntity<Sonda>(sonda, HttpStatus.OK);
+        
     }
 	
 	
