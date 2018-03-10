@@ -7,8 +7,8 @@ This API allows the user to control "Sondas" in Mars' surface. The endpoints are
   Sets up the upper-right boundary of Mars' surface. Returns json data about the set boundary.
 
 *  **Request Headers**
-    Content-type: application/json <br />
-	Accept: application/json
+     <br /> Content-type: application/json <br />
+     Accept: application/json
   
 * **Data Params**
 
@@ -71,7 +71,7 @@ This API allows the user to control "Sondas" in Mars' surface. The endpoints are
   existing sonda, the new sonda will overwrite the old one.
 
 *  **Request Headers**
-	Content-type: application/json <br />
+	<br /> Content-type: application/json <br />
 	Accept: application/json
   
 * **Data Params**
@@ -122,7 +122,7 @@ This API allows the user to control "Sondas" in Mars' surface. The endpoints are
   Returns json data about the sonda in its new Position.
 
 *  **Request Headers**
-	Content-type: application/json <br />
+	<br /> Content-type: application/json <br />
 	Accept: application/json
  
 *  **URL Params**
@@ -224,7 +224,7 @@ This API allows the user to control "Sondas" in Mars' surface. The endpoints are
   Removes the sonda for the given id from Mars
 
 *  **Request Headers**
-	Content-type: application/json <br />
+	<br /> Content-type: application/json <br />
 	Accept: application/json
  
 *  **URL Params**
